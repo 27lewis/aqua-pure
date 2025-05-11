@@ -1,0 +1,127 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #4de2e2, #003bb6); /* de cian a azul */
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007B7F;
+  padding: 10px 20px;
+  border-radius: 10px; /* Añadido borde redondeado al contenedor de la barra de navegación */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil para un efecto de profundidad */
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  position: relative; /* Necesario para posicionar el submenú */
+  padding-left: 0; /* Eliminar padding por defecto */
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px 10px; /* Espaciado interno para un mejor diseño */
+  border-radius: 5px; /* Bordes redondeados en los enlaces */
+  transition: background-color 0.3s ease; /* Efecto de transición en el fondo */
+}
+
+.nav-links a:hover {
+  background-color: #005f5f; /* Cambio de color de fondo al pasar el cursor */
+}
+
+.nav-links li:hover > .sub-menu {
+  display: block; /* Muestra el submenú cuando pasas el mouse sobre el li */
+}
+
+.sub-menu {
+  display: none; /* Submenú oculto por defecto */
+  position: absolute;
+  background-color: #007B7F;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el submenú */
+  z-index: 10;
+  list-style-type: none; /* Eliminar los bullets */
+  padding-left: 0; /* Eliminar padding por defecto */
+}
+
+.sub-menu li {
+  padding: 10px;
+}
+
+.sub-menu a {
+  padding: 5px 15px;
+  color: white;
+  font-weight: normal;
+}
+
+.sub-menu a:hover {
+  background-color: #005f5f; /* Cambio de color de fondo en el submenú */
+}
+
+.auth-buttons {
+  display: flex;
+  background-color: #eeeeee;
+  border-radius: 30px;
+  padding: 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.auth-buttons .btn {
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+}
+
+.auth-buttons .btn:first-child {
+  background-color: #00a650; /* Color verde para Sign Up */
+  color: white;
+  margin-right: 3px;
+  box-shadow: 0 2px 6px rgba(0, 166, 80, 0.4);
+}
+
+.auth-buttons .btn:first-child:hover {
+  background-color: #008c44; /* Verde más oscuro al pasar el cursor */
+  box-shadow: 0 4px 8px rgba(0, 166, 80, 0.6);
+  transform: translateY(-2px);
+}
+
+.auth-buttons .btn:last-child {
+  background-color: transparent;
+  color: #333;
+}
+
+.auth-buttons .btn:last-child:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.quienes-somos {
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.quienes-somos h1 {
+  color: #007B7F;
+}
