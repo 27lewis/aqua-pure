@@ -3,41 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aqua Pure</title>
-  <link rel="stylesheet" href="style.css">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Aqua-Pure</title>
+  <link rel="stylesheet" href="inicio.css">
 </head>
 <body>
+  <nav>
+    <div class="logo">
+      <img src="logo.png" alt="Aqua-Pure Logo">
+    </div>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#sabias-que">¿Sabías que…?</a></li>
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <a href="#login" class="btn">Iniciar sesión</a>
+      <a href="#register" class="btn">Registrarse</a>
+    </div>
+  </nav>
 
-  <header>
-    <nav>
-      <img src="ChatGPT Image 10 may 2025, 18_25_48.png" alt="Logo Aqua Pure" class="logo">
-      <ul class="nav-links">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="guia.html">Guías</a></li>
-        <li><a href="#">Quiénes Somos</a><ul class="sub-menu">
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-140157"><a href="https://www.fundacionaquae.org/la-fundacion/">Vision</a></li>
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-140158"><a href="https://www.fundacionaquae.org/la-fundacion/nuestra-organizacion/">Nuestra organización</a></li>
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-140159"><a href="https://www.fundacionaquae.org/la-fundacion/como-trabajamos/">Cómo trabajamos</a></li>
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-140155"><a href="https://www.fundacionaquae.org/donde-trabajamos/">Dónde trabajamos</a></li>
-        </ul></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="#" class="btn">Login</a>
-        <a href="#" class="btn">Register</a>
-      </div>
-    </nav>
-  </header>
-  
+  <section id="inicio" class="sabias-que">
+    <h1>¿Sabías que…?</h1>
+    <p>
+      Más del 25% de los colombianos no tienen acceso adecuado a agua potable, y muchas comunidades rurales dependen de fuentes contaminadas que ponen en riesgo su salud. <strong>Aqua-Pure</strong> nace para transformar esta realidad, brindando soluciones prácticas de saneamiento del agua para todos.
+    </p>
+  </section>
+
   <main>
-    <section class="quienes-somos">
-      <h1>Quiénes Somos</h1>
-      <p>
-        En <strong>Aqua Pure</strong>, nos dedicamos a ofrecer guías educativas para fomentar el cuidado del agua 
-        y promover prácticas sostenibles. Nuestro objetivo es concientizar y educar a la comunidad 
-        sobre la importancia del uso responsable del agua.
-      </p>
+    <section id="productos" class="seccion">
+      <h2>Productos</h2>
+      <div class="contenido">
+        <p>Conoce nuestros productos diseñados para mejorar el acceso al agua potable en todo tipo de entornos, desde hogares hasta comunidades rurales.</p>
+        <!-- Aquí puedes agregar los productos -->
+      </div>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Contacto</h2>
+      <div class="contenido">
+        <p>¿Tienes alguna pregunta o inquietud? Contáctanos a través de los siguientes medios.</p>
+        <!-- Formulario de contacto -->
+        <form>
+          <input type="text" placeholder="Tu nombre" required>
+          <input type="email" placeholder="Tu email" required>
+          <textarea placeholder="Tu mensaje" required></textarea>
+          <button type="submit" class="btn">Enviar mensaje</button>
+        </form>
+      </div>
     </section>
   </main>
 
+  <footer>
+    <p>&copy; 2025 Aqua-Pure. Todos los derechos reservados.</p>
+    <div class="social-links">
+      <a href="https://www.facebook.com" target="_blank">Facebook</a>
+      <a href="https://www.twitter.com" target="_blank">Twitter</a>
+      <a href="https://www.instagram.com" target="_blank">Instagram</a>
+    </div>
+  </footer>
 </body>
 </html>
