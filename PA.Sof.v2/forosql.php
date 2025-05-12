@@ -1,3 +1,27 @@
+
+<?php
+
+// Conexión a la base de datos (ajusta con tus datos)
+//  $conn = new mysqli("localhost", "tu_usuario", "tu_contraseña", "tu_base_datos");
+//  if ($conn->connect_error) {
+//    die("Error de conexión: " . $conn->connect_error);
+//  }
+// Procesar formulario para insertar mensaje
+//  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//    $mensaje = trim($_POST["mensaje"]);
+//    if (!empty($mensaje)) {
+//      $usuario = isset($_SESSION["usuario"]) ? $_SESSION["usuario"] : "Anónimo";
+//      $stmt = $conn->prepare("INSERT INTO mensajes (usuario, contenido) VALUES (?, ?)");
+//      $stmt->bind_param("ss", $usuario, $mensaje);
+//      $stmt->execute();
+//      $stmt->close();
+//     header("Location: foro.php"); // Evita reenvío doble al recargar
+//      exit();
+//    }
+//  }
+?> 
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +31,7 @@
   <link rel="stylesheet" href="foro.css" />
 </head>
 <body>
- <header>
+   <header>
     <nav>
       <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
       <ul class="nav-links">
@@ -32,8 +56,6 @@
     </nav>
   </header>
 
-
-
   <main>
     <div class="contenido">
       <div class="intro">
@@ -43,19 +65,22 @@
 
       <div class="foro-container">
         <div class="foro-mensajes" id="foro-mensajes">
-          <!-- Aquí se verán los mensajes -->
-          <div class="mensaje">
-            <strong>Usuario1:</strong> ¡Hola a todos! ¿Cómo podemos ahorrar más agua?
-          </div>
-          <div class="mensaje">
-            <strong>Usuario2:</strong> Una idea es reutilizar el agua de la lavadora para el baño.
-          </div>
+          <?php
+           $result = $conn->query("SELECT usuario, contenido FROM mensajes ORDER BY fecha ASC");
+           while ($row = $result->fetch_assoc()) {
+             echo "<div class='mensaje'><strong>" . htmlspecialchars($row["usuario"]) . ":</strong> " . htmlspecialchars($row["contenido"]) . "</div>";
+           }
+          ?>
         </div>
 
-        <form class="foro-form" id="foro-form">
-          <textarea id="mensaje" rows="3" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        <?php if (isset($_SESSION["usuario"])): ?>
+        <form class="foro-form" method="POST" action="foro.php">
+          <textarea name="mensaje" rows="3" placeholder="Escribe tu mensaje aquí..." required></textarea>
           <button type="submit">Enviar</button>
         </form>
+        <?php else: ?>
+          <p>Debes <a href="iniciarsesion.php">iniciar sesión</a> para publicar un mensaje.</p>
+        <?php endif; ?> 
       </div>
     </div>
   </main>
@@ -70,25 +95,5 @@
       <a href="#">YouTube</a>
     </div>
   </footer>
-
-  <script>
-    const form = document.getElementById('foro-form');
-    const mensajes = document.getElementById('foro-mensajes');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const input = document.getElementById('mensaje');
-      const texto = input.value.trim();
-
-      if (texto) {
-        const nuevo = document.createElement('div');
-        nuevo.classList.add('mensaje');
-        nuevo.innerHTML = '<strong>Tú:</strong> ' + texto;
-        mensajes.appendChild(nuevo);
-        mensajes.scrollTop = mensajes.scrollHeight;
-        input.value = '';
-      }
-    });
-  </script>
 </body>
 </html>
