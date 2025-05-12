@@ -1,28 +1,27 @@
+
 <?php
-session_start();
-session_start();
-$_SESSION["usuario"] = $nombre_usuario; // Nombre obtenido de la base de datos
 
-// Conexión a la base de datos (ajusta con tus datos)
-$conn = new mysqli("localhost", "tu_usuario", "tu_contraseña", "tu_base_datos");
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
+// // Conexión a la base de datos (ajusta con tus datos)
+// $conn = new mysqli("localhost", "tu_usuario", "tu_contraseña", "tu_base_datos");
+// if ($conn->connect_error) {
+//   die("Error de conexión: " . $conn->connect_error);
+// }
 
-// Procesar formulario para insertar mensaje
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $mensaje = trim($_POST["mensaje"]);
-  if (!empty($mensaje)) {
-    $usuario = isset($_SESSION["usuario"]) ? $_SESSION["usuario"] : "Anónimo";
-    $stmt = $conn->prepare("INSERT INTO mensajes (usuario, contenido) VALUES (?, ?)");
-    $stmt->bind_param("ss", $usuario, $mensaje);
-    $stmt->execute();
-    $stmt->close();
-    header("Location: foro.php"); // Evita reenvío doble al recargar
-    exit();
-  }
-}
-?>
+// // Procesar formulario para insertar mensaje
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//   $mensaje = trim($_POST["mensaje"]);
+//   if (!empty($mensaje)) {
+//     $usuario = isset($_SESSION["usuario"]) ? $_SESSION["usuario"] : "Anónimo";
+//     $stmt = $conn->prepare("INSERT INTO mensajes (usuario, contenido) VALUES (?, ?)");
+//     $stmt->bind_param("ss", $usuario, $mensaje);
+//     $stmt->execute();
+//     $stmt->close();
+//     header("Location: foro.php"); // Evita reenvío doble al recargar
+//     exit();
+//   }
+// }
+?> 
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -33,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="foro.css" />
 </head>
 <body>
-  <header>
+   <header>
     <nav>
       <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
       <ul class="nav-links">
@@ -52,13 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <li><a href="contacto.php">Contacto</a></li>
       </ul>
       <div class="auth-buttons">
-        <?php if (isset($_SESSION["usuario"])): ?>
-          <span class="bienvenida">Hola, <?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-          <a href="cerrarsesion.php" class="btn">Cerrar Sesión</a>
-        <?php else: ?>
-          <a href="iniciarsesion.php" class="btn">Iniciar Sesión</a>
-          <a href="registrarse.php" class="btn">Registrarse</a>
-        <?php endif; ?>
+        <a href="iniciarsesion.php" class="btn">Iniciar Sesión</a>
+        <a href="registrarse.php" class="btn">Registrarse</a>
       </div>
     </nav>
   </header>

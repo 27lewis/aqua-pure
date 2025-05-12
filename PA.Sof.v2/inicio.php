@@ -7,7 +7,7 @@
   <title>Aqua Pure - Inicio</title>
 </head>
 <body>
-  <header>
+    <header>
     <nav>
       <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
       <ul class="nav-links">
@@ -31,7 +31,6 @@
       </div>
     </nav>
   </header>
-
   <main>
     <div class="importancia-agua">
       <h2>¿Por qué es importante cuidar el agua?</h2>

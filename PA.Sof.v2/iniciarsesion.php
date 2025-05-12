@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Aqua Pure - Iniciar Sesión</title>
 </head>
 <body>
-  <header>
+   <header>
     <nav>
       <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
       <ul class="nav-links">

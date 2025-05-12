@@ -13,7 +13,7 @@ session_start();
 </head>
 <body>
 
- <header>
+    <header>
     <nav>
       <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
       <ul class="nav-links">
