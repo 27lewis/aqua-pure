@@ -3,18 +3,16 @@ require_once 'conexion.php';
 session_start();
 
 // Verificar conexión (PDO no tiene connect_error, usamos try-catch en conexion.php)
-try {
-    // Procesar nuevo hilo
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["usuario_id"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["user_id"])) {
         $titulo = trim($_POST["titulo"] ?? '');
         $contenido = trim($_POST["contenido"] ?? '');
-        $usuario_id = (int)$_SESSION["usuario_id"];
+        $user_id = (int)$_SESSION['user_id'];
 
         if (!empty($titulo) && !empty($contenido)) {
-            $stmt = $conn->prepare("INSERT INTO foro_hilos (titulo, contenido, usuario_id) VALUES (:titulo, :contenido, :usuario_id)");
+            $stmt = $conn->prepare("INSERT INTO foro_hilos (titulo, contenido, user_id) VALUES (:titulo, :contenido, :user_id)");
             $stmt->bindParam(':titulo', $titulo);
             $stmt->bindParam(':contenido', $contenido);
-            $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             
             if ($stmt->execute()) {
                 header("Location: foro.php");
@@ -24,10 +22,6 @@ try {
             }
         }
     }
-} catch (PDOException $e) {
-    error_log("Error de base de datos: " . $e->getMessage());
-    die("Error en el sistema. Por favor, inténtalo más tarde.");
-}
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +47,7 @@ try {
                 try {
                     $query = "SELECT fh.id, fh.titulo, fh.contenido, u.nombre AS usuario, fh.fecha_creacion
                               FROM foro_hilos fh
-                              JOIN usuarios u ON fh.usuario_id = u.id
+                              JOIN usuarios u ON fh.user_id = u.id
                               ORDER BY fh.fecha_creacion DESC";
                     
                     $stmt = $conn->query($query);
@@ -77,7 +71,7 @@ try {
                 ?>
             </div>
 
-            <?php if (isset($_SESSION["usuario_id"])): ?>
+            <?php if (isset($_SESSION["user_id"])): ?>
                 <form class="foro-form" method="POST">
                     <input type="text" name="titulo" placeholder="Título" required>
                     <textarea name="contenido" rows="4" placeholder="Contenido" required></textarea>

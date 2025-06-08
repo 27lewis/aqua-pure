@@ -90,14 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
 
-    <div class="form-respuesta">
-      <h3>Responder Mensaje</h3>
-      <form method="post">
-        <textarea name="respuesta" placeholder="Escribe tu respuesta aquí..." required></textarea>
-        <button type="submit" class="btn-submit">Enviar Respuesta</button>
-        <a href="panel_moderador.php#contacto" class="btn-back">Volver al panel</a>
-      </form>
-    </div>
+    
   </div>
 </main>
 

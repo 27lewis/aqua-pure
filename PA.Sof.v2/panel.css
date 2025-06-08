@@ -26,7 +26,7 @@ h2 {
 /* Dashboard Stats */
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* Original: repeat(4, 1fr), Duplicate: repeat(3, 1fr) - Keeping original */
     gap: 20px;
     margin-bottom: 30px;
 }
@@ -69,13 +69,13 @@ table {
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 12px 15px; /* Original: 12px 15px, Duplicate: 12px - Keeping original */
     text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0; /* Original: #e0e0e0, Duplicate: #ddd - Keeping original */
 }
 
 th {
-    background-color: #007B7F;
+    background-color: #007B7F; /* Original: #007B7F, Duplicate: #f2f2f2 - Keeping original */
     color: white;
     font-weight: 500;
 }
@@ -170,3 +170,161 @@ section {
     color: #28a745;
     font-weight: bold;
 }
+
+/* Additional Panel Styles */
+.panel-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.panel-section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.panel-section h3 {
+    color: #007B7F;
+    border-bottom: 2px solid #4de2e2;
+    padding-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-delete {
+    background-color: #d9534f;
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #c9302c;
+}
+
+.contenido-truncado {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Estilos para el textarea de contenido del foro */
+.contenido-hilos h4 {
+    color: #007B7F;
+    margin-bottom: 10px;
+}
+
+.textarea-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.textarea-actions .btn-action {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+}
+
+        /* Improved Form Styles */
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 90%; /* Adjust width as needed */
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .form-container h2 {
+            color: #007B7F;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4de2e2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-start; /* Align buttons to the left */
+            margin-top: 20px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .form-actions button:first-child { /* Publicar button */
+            background-color: #007B7F;
+            color: white;
+        }
+
+        .form-actions button:first-child:hover {
+            background-color: #005f5f;
+        }
+
+        /* Styling for the Cancel button as an anchor */
+        .form-actions .btn-cancel {
+            display: inline-block; /* Treat as a button-like element */
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            color: #555;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none; /* Remove underline */
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .form-actions .btn-cancel:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Specific error message style */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
