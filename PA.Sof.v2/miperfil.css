@@ -1,3 +1,4 @@
+/* CSS base del sitio (mantener el CSS original que ya tienes) */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -147,102 +148,117 @@ main {
 }
 
 .contenido {
-  max-width: 500px;
+  max-width: 900px;
   margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.92);
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
 }
 
-.intro {
-  text-align: center;
-  margin-bottom: 30px;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.intro h1 {
+.seccion {
+  margin-bottom: 40px;
+}
+
+.seccion h2 {
   color: #007B7F;
-  font-size: 2rem;
-  margin-bottom: 15px;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  text-align: center;
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
-.intro h1::after {
+.seccion h2::after {
   content: '';
   display: block;
-  width: 50%;
+  width: 80px;
   height: 3px;
-  background: linear-gradient(to right, #4de2e2, #003bb6);
+  background: linear-gradient(to right, #4de2e2, #007B7F);
   margin: 10px auto 0;
   border-radius: 2px;
 }
 
-.formulario {
-  max-width: 400px;
-  margin: 0 auto;
+/* Estilos específicos para la información del perfil */
+.profile-info {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.campo {
-  margin-bottom: 20px;
+.profile-info p {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 0;
+  font-size: 1.1rem;
 }
 
-.campo label {
-  display: block;
-  text-align: left;
+.profile-info p:last-child {
+  border-bottom: none;
+}
+
+.profile-info strong {
+  color: #005f5f;
+  min-width: 180px;
+  margin-right: 15px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-  font-size: 1rem;
 }
 
-.campo input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
+/* Estilos para los botones de acción del perfil */
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
-.campo input:focus {
-  border-color: #4de2e2;
-  outline: none;
-  box-shadow: 0 0 5px rgba(77, 226, 226, 0.5);
-}
-
-.btn-form {
-  width: 100%;
-  padding: 12px;
-  background-color: #00a650;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-form:hover {
-  background-color: #008c44;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 166, 80, 0.6);
-}
-
-.enlace {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.enlace a {
-  color: #007B7F;
+.btn-action {
+  padding: 12px 25px;
   text-decoration: none;
+  border-radius: 8px;
   font-weight: bold;
+  transition: all 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  font-size: 0.95rem;
+  background-color: #007B7F;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 123, 127, 0.3);
 }
 
-.enlace a:hover {
-  text-decoration: underline;
+.btn-action:hover {
+  background-color: #005f5f;
+  box-shadow: 0 4px 8px rgba(0, 123, 127, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Estilo especial para el botón de moderador */
+.btn-action:last-child {
+  background-color: #00a650;
+  box-shadow: 0 2px 6px rgba(0, 166, 80, 0.3);
+}
+
+.btn-action:last-child:hover {
+  background-color: #008c44;
+  box-shadow: 0 4px 8px rgba(0, 166, 80, 0.4);
 }
 
 footer {
@@ -269,12 +285,14 @@ footer p {
   color: white;
   font-size: 1.2rem;
   transition: transform 0.3s ease;
+  text-decoration: none;
 }
 
 .social-links a:hover {
   transform: scale(1.2);
 }
 
+/* Responsive para móviles */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
@@ -292,81 +310,144 @@ footer p {
   }
   
   .contenido {
-    margin: 30px 15px;
+    margin: 20px;
+    padding: 25px;
+  }
+  
+  .seccion h2 {
+    font-size: 1.8rem;
+  }
+  
+  .profile-info {
     padding: 20px;
   }
-
-  .intro h1 {
-    font-size: 1.5rem;
+  
+  .profile-info p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 0;
+  }
+  
+  .profile-info strong {
+    min-width: auto;
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  
+  .profile-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-action {
+    width: 100%;
+    text-align: center;
   }
 }
+/* Estilos para formularios - Agregar al final de miperfil.css */
 
-/* Estilos para formularios de autenticación */
-.contenido {
-  max-width: 600px;
-  margin: 40px auto;
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+/* Alertas */
+.alert {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Formularios */
+.profile-form {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: bold;
-  color: #007B7F;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #007B7F;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 127, 0.2);
-}
-
-.btn-registro,
-.btn-login {
-  background-color: #007B7F;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-registro:hover,
-.btn-login:hover {
-  background-color: #005f5f;
-  transform: translateY(-2px);
-}
-
-/* Estilos para el enlace de recuperación de contraseña */
-p a {
-  color: #007B7F;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-p a:hover {
   color: #005f5f;
-  text-decoration: underline;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007B7F;
+  box-shadow: 0 0 0 3px rgba(0, 123, 127, 0.1);
+}
+
+.form-help {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: flex-start;
+}
+
+/* Variantes de botones */
+.btn-primary {
+  background-color: #007B7F !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: #005f5f !important;
+}
+
+.btn-secondary {
+  background-color: #6c757d !important;
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62 !important;
+}
+
+/* Responsive para formularios */
+@media (max-width: 768px) {
+  .profile-form {
+    padding: 20px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .btn-action {
+    width: 100%;
+    text-align: center;
+  }
 }

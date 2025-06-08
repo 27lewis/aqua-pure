@@ -1,94 +1,98 @@
+<?php
+require_once 'conexion.php';
+session_start();
+
+// Verificar conexión (PDO no tiene connect_error, usamos try-catch en conexion.php)
+try {
+    // Procesar nuevo hilo
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["usuario_id"])) {
+        $titulo = trim($_POST["titulo"] ?? '');
+        $contenido = trim($_POST["contenido"] ?? '');
+        $usuario_id = (int)$_SESSION["usuario_id"];
+
+        if (!empty($titulo) && !empty($contenido)) {
+            $stmt = $conn->prepare("INSERT INTO foro_hilos (titulo, contenido, usuario_id) VALUES (:titulo, :contenido, :usuario_id)");
+            $stmt->bindParam(':titulo', $titulo);
+            $stmt->bindParam(':contenido', $contenido);
+            $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                header("Location: foro.php");
+                exit();
+            } else {
+                error_log("Error al insertar hilo: " . implode(" ", $stmt->errorInfo()));
+            }
+        }
+    }
+} catch (PDOException $e) {
+    error_log("Error de base de datos: " . $e->getMessage());
+    die("Error en el sistema. Por favor, inténtalo más tarde.");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aqua Pure - Foro de la Comunidad</title>
-  <link rel="stylesheet" href="foro.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aqua Pure - Foro</title>
+    <link rel="stylesheet" href="foro.css">
 </head>
 <body>
- <header>
-    <nav>
-      <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
-      <ul class="nav-links">
-        <li><a href="inicio.php">Inicio</a></li>
-        <li><a href="guia.php">Guías</a></li>
-        <li>
-          <a href="#" aria-haspopup="true" aria-expanded="false">Quiénes Somos</a>
-          <ul class="sub-menu" role="menu">
-            <li><a href="vision.php" role="menuitem">Nuestra Visión</a></li>
-            <li><a href="organizacion.php" role="menuitem">Organización</a></li>
-            <li><a href="comotrabajamos.php" role="menuitem">Cómo Trabajamos</a></li>
-            <li><a href="dondetrabajamos.php" role="menuitem">Dónde Trabajamos</a></li>
-          </ul>
-        </li>
-        <li><a href="foro.php">Foro</a></li>
-        <li><a href="contacto.php">Contacto</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="iniciarsesion.php" class="btn">Iniciar Sesión</a>
-        <a href="registrarse.php" class="btn">Registrarse</a>
-      </div>
-    </nav>
-  </header>
+    <?php include 'header.php'; ?>
 
-
-
-  <main>
-    <div class="contenido">
-      <div class="intro">
-        <h1>Foro de la Comunidad</h1>
-        <p>Comparte ideas, dudas y sugerencias con otros usuarios.</p>
-      </div>
-
-      <div class="foro-container">
-        <div class="foro-mensajes" id="foro-mensajes">
-          <!-- Aquí se verán los mensajes -->
-          <div class="mensaje">
-            <strong>Usuario1:</strong> ¡Hola a todos! ¿Cómo podemos ahorrar más agua?
-          </div>
-          <div class="mensaje">
-            <strong>Usuario2:</strong> Una idea es reutilizar el agua de la lavadora para el baño.
-          </div>
+    <main class="contenido">
+        <div class="intro">
+            <h1>Foro de la Comunidad</h1>
+            <p>Comparte ideas, dudas y sugerencias con otros usuarios.</p>
         </div>
 
-        <form class="foro-form" id="foro-form">
-          <textarea id="mensaje" rows="3" placeholder="Escribe tu mensaje aquí..." required></textarea>
-          <button type="submit">Enviar</button>
-        </form>
-      </div>
-    </div>
-  </main>
+        <div class="foro-container">
+            <div class="foro-mensajes">
+                <?php
+                try {
+                    $query = "SELECT fh.id, fh.titulo, fh.contenido, u.nombre AS usuario, fh.fecha_creacion
+                              FROM foro_hilos fh
+                              JOIN usuarios u ON fh.usuario_id = u.id
+                              ORDER BY fh.fecha_creacion DESC";
+                    
+                    $stmt = $conn->query($query);
+                    
+                    if ($stmt->rowCount() > 0) {
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<div class="mensaje">';
+                            echo '<h3>'.htmlspecialchars($row["titulo"]).'</h3>';
+                            echo '<p><strong>'.htmlspecialchars($row["usuario"]).'</strong></p>';
+                            echo '<p>'.nl2br(htmlspecialchars($row["contenido"])).'</p>';
+                            echo '<div class="fecha">'.htmlspecialchars($row["fecha_creacion"]).'</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p class="no-hilos">No hay hilos en el foro aún. ¡Sé el primero!</p>';
+                    }
+                } catch (PDOException $e) {
+                    echo '<p class="error-mensaje">Error al cargar los hilos.</p>';
+                    error_log("Error en consulta: " . $e->getMessage());
+                }
+                ?>
+            </div>
 
-  <footer>
-    <p>© 2025 Aqua Pure - Todos los derechos reservados</p>
-    <p>Comprometidos con la conservación del agua y el medio ambiente</p>
-    <div class="social-links">
-      <a href="#">Facebook</a>
-      <a href="#">Twitter</a>
-      <a href="#">Instagram</a>
-      <a href="#">YouTube</a>
-    </div>
-  </footer>
+            <?php if (isset($_SESSION["usuario_id"])): ?>
+                <form class="foro-form" method="POST">
+                    <input type="text" name="titulo" placeholder="Título" required>
+                    <textarea name="contenido" rows="4" placeholder="Contenido" required></textarea>
+                    <button type="submit">Publicar</button>
+                </form>
+            <?php else: ?>
+                <p>Debes <a href="iniciarsesion.php">iniciar sesión</a> para participar.</p>
+            <?php endif; ?>
+        </div>
+    </main>
 
-  <script>
-    const form = document.getElementById('foro-form');
-    const mensajes = document.getElementById('foro-mensajes');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const input = document.getElementById('mensaje');
-      const texto = input.value.trim();
-
-      if (texto) {
-        const nuevo = document.createElement('div');
-        nuevo.classList.add('mensaje');
-        nuevo.innerHTML = '<strong>Tú:</strong> ' + texto;
-        mensajes.appendChild(nuevo);
-        mensajes.scrollTop = mensajes.scrollHeight;
-        input.value = '';
-      }
-    });
-  </script>
+    <?php include 'footer.php'; ?>
 </body>
 </html>
+<?php 
+// PDO no necesita cerrarse explícitamente, pero si quieres:
+$conn = null;
+?>

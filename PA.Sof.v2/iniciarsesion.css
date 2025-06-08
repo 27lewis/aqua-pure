@@ -147,12 +147,13 @@ main {
 }
 
 .contenido {
-  max-width: 500px;
-  margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.92);
+  max-width: 600px; /* Consolidated from 500px and 600px */
+  margin: 40px auto; /* Consolidated from 0 auto and 40px auto */
+  background-color: rgba(255, 255, 255, 0.95); /* Consolidated from 0.92 and 0.95 */
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Added from the second .contenido declaration */
 }
 
 .intro {
@@ -160,15 +161,17 @@ main {
   margin-bottom: 30px;
 }
 
-.intro h1 {
+.intro h1,
+.contenido h2 { /* Consolidated h1 and h2 styles */
   color: #007B7F;
   font-size: 2rem;
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Adjust for h1/h2 */
   position: relative;
   display: inline-block;
 }
 
-.intro h1::after {
+.intro h1::after,
+.contenido h2::after { /* Consolidated h1::after and h2::after styles */
   content: '';
   display: block;
   width: 50%;
@@ -183,50 +186,61 @@ main {
   margin: 0 auto;
 }
 
-.campo {
+.campo,
+.form-group { /* Consolidated .campo and .form-group */
   margin-bottom: 20px;
+  text-align: left; /* Added from the second .form-group declaration */
 }
 
-.campo label {
+.campo label,
+.form-group label { /* Consolidated label styles */
   display: block;
   text-align: left;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-  font-size: 1rem;
+  color: #007B7F; /* Consolidated from #333 and #007B7F */
+  margin-bottom: 8px; /* Consolidated from 5px and 8px */
+  font-size: 1rem; /* Added from the first .campo label */
 }
 
-.campo input {
+.campo input,
+.form-group input,
+.form-group select { /* Consolidated input and select styles */
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 12px; /* Consolidated from 10px and 12px */
+  border: 1px solid #ddd; /* Consolidated from #ccc and #ddd */
+  border-radius: 8px; /* Consolidated from 5px and 8px */
+  font-size: 16px; /* Consolidated from 1rem and 16px */
   transition: border-color 0.3s ease;
 }
 
-.campo input:focus {
-  border-color: #4de2e2;
+.campo input:focus,
+.form-group input:focus,
+.form-group select:focus { /* Consolidated focus styles */
+  border-color: #007B7F; /* Consolidated from #4de2e2 and #007B7F */
   outline: none;
-  box-shadow: 0 0 5px rgba(77, 226, 226, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 123, 127, 0.2); /* Consolidated from 0 0 5px rgba(77, 226, 226, 0.5) and 0 0 0 2px rgba(0, 123, 127, 0.2) */
 }
 
-.btn-form {
-  width: 100%;
-  padding: 12px;
-  background-color: #00a650;
+.btn-form,
+.btn-registro,
+.btn-login { /* Consolidated button styles */
+  background-color: #007B7F; /* Consolidated from #00a650 and #007B7F */
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 12px 20px; /* Consolidated from 12px and 12px 20px */
+  border-radius: 8px; /* Consolidated from 5px and 8px */
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
 }
 
-.btn-form:hover {
-  background-color: #008c44;
+.btn-form:hover,
+.btn-registro:hover,
+.btn-login:hover { /* Consolidated hover styles */
+  background-color: #005f5f; /* Consolidated from #008c44 and #005f5f */
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 166, 80, 0.6);
+  box-shadow: 0 4px 8px rgba(0, 166, 80, 0.6); /* Kept the more specific shadow, adjust if generic is preferred */
 }
 
 .enlace {
@@ -235,14 +249,18 @@ main {
   text-align: center;
 }
 
-.enlace a {
+.enlace a,
+p a { /* Consolidated link styles */
   color: #007B7F;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s ease; /* Added transition */
 }
 
-.enlace a:hover {
+.enlace a:hover,
+p a:hover { /* Consolidated link hover styles */
   text-decoration: underline;
+  color: #005f5f; /* Added color change on hover */
 }
 
 footer {
@@ -275,6 +293,7 @@ footer p {
   transform: scale(1.2);
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
@@ -296,7 +315,8 @@ footer p {
     padding: 20px;
   }
 
-  .intro h1 {
+  .intro h1,
+  .contenido h2 { /* Consolidated h1 and h2 font size */
     font-size: 1.5rem;
   }
 }

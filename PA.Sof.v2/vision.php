@@ -9,34 +9,11 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="vision.css">
   <title>Aqua Pure - Nuestra Visión</title>
-
 </head>
 <body>
 
-    <header>
-    <nav>
-      <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
-      <ul class="nav-links">
-        <li><a href="inicio.php">Inicio</a></li>
-        <li><a href="guia.php">Guías</a></li>
-        <li>
-          <a href="#" aria-haspopup="true" aria-expanded="false">Quiénes Somos</a>
-          <ul class="sub-menu" role="menu">
-            <li><a href="vision.php" role="menuitem">Nuestra Visión</a></li>
-            <li><a href="organizacion.php" role="menuitem">Organización</a></li>
-            <li><a href="comotrabajamos.php" role="menuitem">Cómo Trabajamos</a></li>
-            <li><a href="dondetrabajamos.php" role="menuitem">Dónde Trabajamos</a></li>
-          </ul>
-        </li>
-        <li><a href="foro.php">Foro</a></li>
-        <li><a href="contacto.php">Contacto</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="iniciarsesion.php" class="btn">Iniciar Sesión</a>
-        <a href="registrarse.php" class="btn">Registrarse</a>
-      </div>
-    </nav>
-  </header>
+  <?php include 'header.php'; ?>
+
   <main>
     <div class="vision-container">
       <h1 class="vision-heading">Quiénes Somos</h1>
@@ -92,69 +69,62 @@ session_start();
         </div>
         
         <div class="team-grid">
-  <div class="team-member">
-    <div class="member-photo-container">
-      <img src="juanpererz.png" alt="Foto de Juan Pérez" class="member-photo">
-    </div>
-    <div class="member-info">
-      <h3 class="member-name">Juan Pérez</h3>
-      <p class="member-title">Director Ejecutivo</p>
-      <p class="member-bio">Ingeniero ambiental con más de 15 años de experiencia en proyectos de acceso al agua en zonas rurales.</p>
-    </div>
-  </div>
-  
-  <div class="team-member">
-    <div class="member-photo-container">
-      <img src="mariagonzales.png" alt="Foto de María González" class="member-photo">
-    </div>
-    <div class="member-info">
-      <h3 class="member-name">María González</h3>
-      <p class="member-title">Directora de Tecnología</p>
-      <p class="member-bio">Especialista en desarrollo de plataformas digitales con enfoque en soluciones para el desarrollo sostenible.</p>
-    </div>
-  </div>
-  
-  <div class="team-member">
-    <div class="member-photo-container">
-      <img src="carlosramirez.png" alt="Foto de Carlos Ramírez" class="member-photo">
-    </div>
-    <div class="member-info">
-      <h3 class="member-name">Carlos Ramírez</h3>
-      <p class="member-title">Coordinador de Programas</p>
-      <p class="member-bio">Sociólogo dedicado a la implementación de programas comunitarios para la gestión del agua.</p>
-    </div>
-  </div>
-  
-  <div class="team-member">
-    <div class="member-photo-container">
-      <img src="anamartinez.png" alt="Foto de Ana Martínez" class="member-photo">
-    </div>
-    <div class="member-info">
-      <h3 class="member-name">Ana Martínez</h3>
-      <p class="member-title">Especialista en Educación</p>
-      <p class="member-bio">Pedagoga con experiencia en el desarrollo de materiales educativos sobre conservación del agua.</p>
-    </div>
-  </div>
-</div>
-    
-    <div class="meta-ods">
-      <img src="ods6.png" alt="ODS 6 Logo" class="ods-logo">
-      <img src="ods11.png" alt="ODS 11 Logo" class="ods-logo">
-      <img src="ods12.png" alt="ODS 12 Logo" class="ods-logo">
-      <p>Estas acciones están alineadas con el <strong>Objetivo de Desarrollo Sostenible 6</strong> de la ONU, que busca garantizar agua limpia y saneamiento para todos antes del 2030.</p>
+          <div class="team-member">
+            <div class="member-photo-container">
+              <img src="juanpererz.png" alt="Foto de Juan Pérez" class="member-photo">
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Juan Pérez</h3>
+              <p class="member-title">Director Ejecutivo</p>
+              <p class="member-bio">Ingeniero ambiental con más de 15 años de experiencia en proyectos de acceso al agua en zonas rurales.</p>
+            </div>
+          </div>
+          
+          <div class="team-member">
+            <div class="member-photo-container">
+              <img src="mariagonzales.png" alt="Foto de María González" class="member-photo">
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">María González</h3>
+              <p class="member-title">Directora de Tecnología</p>
+              <p class="member-bio">Especialista en desarrollo de plataformas digitales con enfoque en soluciones para el desarrollo sostenible.</p>
+            </div>
+          </div>
+          
+          <div class="team-member">
+            <div class="member-photo-container">
+              <img src="carlosramirez.png" alt="Foto de Carlos Ramírez" class="member-photo">
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Carlos Ramírez</h3>
+              <p class="member-title">Coordinador de Programas</p>
+              <p class="member-bio">Sociólogo dedicado a la implementación de programas comunitarios para la gestión del agua.</p>
+            </div>
+          </div>
+          
+          <div class="team-member">
+            <div class="member-photo-container">
+              <img src="anamartinez.png" alt="Foto de Ana Martínez" class="member-photo">
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Ana Martínez</h3>
+              <p class="member-title">Especialista en Educación</p>
+              <p class="member-bio">Pedagoga con experiencia en el desarrollo de materiales educativos sobre conservación del agua.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="meta-ods">
+          <img src="ods6.png" alt="ODS 6 Logo" class="ods-logo">
+          <img src="ods11.png" alt="ODS 11 Logo" class="ods-logo">
+          <img src="ods12.png" alt="ODS 12 Logo" class="ods-logo">
+          <p>Estas acciones están alineadas con el <strong>Objetivo de Desarrollo Sostenible 6</strong> de la ONU, que busca garantizar agua limpia y saneamiento para todos antes del 2030.</p>
+        </div>
+      </section>
     </div>
   </main>
 
-  <footer>
-    <p>© 2025 Aqua Pure - Todos los derechos reservados</p>
-    <p>Comprometidos con la conservación del agua y el medio ambiente</p>
-    <div class="social-links">
-      <a href="#">Facebook</a>
-      <a href="#">Twitter</a>
-      <a href="#">Instagram</a>
-      <a href="#">YouTube</a>
-    </div>
-  </footer>
+  <?php include 'footer.php'; ?>
 
   <!-- Añadir Font Awesome para los iconos -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>

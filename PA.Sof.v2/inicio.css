@@ -40,7 +40,91 @@ nav {
   padding-left: 0;
   margin: 0;
 }
-
+.mensaje-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .mensaje-header {
+      background-color: #007B7F;
+      color: white;
+      padding: 15px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .mensaje-body {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+    }
+    
+    .mensaje-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .form-respuesta {
+      margin-top: 30px;
+    }
+    
+    .form-respuesta textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    
+    .btn-submit {
+      background-color: #007B7F;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .btn-submit:hover {
+      background-color: #005f5f;
+    }
+    
+    .btn-back {
+      display: inline-block;
+      margin-top: 15px;
+      color: #007B7F;
+      text-decoration: none;
+    }
+    
+    .estado-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      background-color: #ddd;
+      color: #333;
+    }
+    
+    .estado-nuevo {
+      background-color: #ff9800;
+      color: white;
+    }
+    
+    .estado-respondido {
+      background-color: #4caf50;
+      color: white;
+    }
+    
+    .estado-resuelto {
+      background-color: #2196f3;
+      color: white;
+    }
 .nav-links a {
   color: white;
   text-decoration: none;
