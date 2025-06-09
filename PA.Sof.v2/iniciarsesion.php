@@ -107,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         
         <p style="margin-top: 20px;">¿No tienes una cuenta? <a href="registrarse.php">Regístrate aquí</a></p>
-        <p><a href="recuperar_contrasena.php">¿Olvidaste tu contraseña?</a></p>
       </div>
     </div>
   </main>

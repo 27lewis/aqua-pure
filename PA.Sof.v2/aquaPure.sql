@@ -18,6 +18,17 @@ CREATE TABLE contactos (
   fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Respuestas a mensajes de contacto (moderador)
+CREATE TABLE respuestas_contacto (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  mensaje_id INT NOT NULL,
+  moderador_id INT NOT NULL,
+  respuesta TEXT NOT NULL,
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (mensaje_id) REFERENCES contactos(id) ON DELETE CASCADE,
+  FOREIGN KEY (moderador_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
 CREATE TABLE foro_hilos (
     id INT AUTO_INCREMENT PRIMARY KEY, -- This is the primary key being referenced
     titulo VARCHAR(200) NOT NULL,
@@ -46,13 +57,3 @@ CREATE INDEX idx_fecha_creacion ON foro_hilos (fecha_creacion DESC);
 CREATE INDEX idx_usuario_id ON foro_hilos (user_id);
 
 
--- Respuestas a mensajes de contacto (moderador)
-CREATE TABLE respuestas_contacto (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  mensaje_id INT NOT NULL,
-  moderador_id INT NOT NULL,
-  respuesta TEXT NOT NULL,
-  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (mensaje_id) REFERENCES contactos(id) ON DELETE CASCADE,
-  FOREIGN KEY (moderador_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);

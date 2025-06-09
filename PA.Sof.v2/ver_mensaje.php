@@ -48,6 +48,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="inicio.css" />
   <title>Aqua Pure - Mensaje de Contacto</title>
+  <style>
+    .boton-volver {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+    .boton-volver:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
 
@@ -90,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
 
+    <a href="panel_moderador.php#contacto" class="boton-volver">← Volver al panel de moderador</a>
     
   </div>
 </main>

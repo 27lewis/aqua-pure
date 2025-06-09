@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'moderador') {
 // Obtener todos los mensajes de contacto
 $mensajes = [];
 try {
-    $mensajes = $conn->query("SELECT id, nombre, email, asunto, mensaje, fecha FROM contactos ORDER BY fecha DESC")->fetchAll();
+$mensajes = $conn->query("SELECT id, nombre, correo AS email, comentario AS mensaje, estado AS leido, fecha FROM contactos ORDER BY fecha DESC")->fetchAll();
 } catch (PDOException $e) {
     error_log("Error al obtener mensajes: " . $e->getMessage());
     $error = "Error al cargar la lista de mensajes";
@@ -38,71 +38,123 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['marcar_leido'])) {
     <title>Mensajes de Contacto - Aqua Pure</title>
     <link rel="stylesheet" href="inicio.css">
     <style>
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .action-buttons {
-            margin-top: 20px;
-        }
-        .btn {
-            padding: 8px 15px;
-            background-color: #007B7F;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-success {
-            background-color: #28a745;
-        }
-        .badge {
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: white;
-        }
-        .badge-success {
-            background-color: #28a745;
-        }
-        .badge-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        .message-details {
-            display: none;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            margin-top: 10px;
-            border-left: 4px solid #007B7F;
-        }
-        .no-messages {
-            padding: 20px;
-            text-align: center;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-        }
+       body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #22c1c3, #0052d4);
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    color: #000;
+}
+
+h2 {
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    color: #000;
+}
+
+th {
+    background-color: #f9f9f9;
+}
+
+td:nth-child(4) {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.action-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn {
+    padding: 7px 12px;
+    background-color: #007B7F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 2px 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #005f5f;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #1e7e34;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.message-details {
+    display: none;
+    background-color: #e9ecef;
+    border-left: 5px solid #007B7F;
+    padding: 10px;
+    color: #000;
+}
+
+.no-messages {
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
     </style>
 </head>
 <body>
@@ -138,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['marcar_leido'])) {
                     <td><?php echo htmlspecialchars($mensaje['id']); ?></td>
                     <td><?php echo htmlspecialchars($mensaje['nombre']); ?></td>
                     <td><?php echo htmlspecialchars($mensaje['email']); ?></td>
-                    <td><?php echo htmlspecialchars($mensaje['asunto']); ?></td>
+                    <td><?php echo htmlspecialchars($mensaje['mensaje']); ?></td>
                     <td><?php echo date('d/m/Y H:i', strtotime($mensaje['fecha'])); ?></td>
                     <td>
                         <span class="badge <?php echo (isset($mensaje['leido'])) && $mensaje['leido'] ? 'badge-success' : 'badge-warning'; ?>">

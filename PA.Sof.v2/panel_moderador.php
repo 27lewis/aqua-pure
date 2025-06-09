@@ -3,46 +3,7 @@
 require_once 'conexion.php'; // Incluye tu archivo de conexión PDO
 session_start();
 
-// Verificar si es moderador
-if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'moderador') {
-    header('Location: iniciarsesion.php');
-    exit();
-}
-// Conexión a la base de datos (ajusta los datos de conexión)
-$host = "localhost:3307";
-$db   = '"aqua-pure"';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-
-    // Consulta para obtener los hilos con autor y conteo de respuestas
-    $sql = "SELECT 
-                foro_hilos.id, 
-                foro_hilos.titulo, 
-                foro_hilos.contenido, 
-                usuarios.nombre AS autor,
-                (SELECT COUNT(*) FROM foro_respuestas WHERE foro_respuestas.hilo_id = foro_hilos.id) AS respuestas,
-                foro_hilos.fecha_creacion
-            FROM foro_hilos
-            LEFT JOIN usuarios ON foro_hilos.user_id = usuarios.id
-            ORDER BY foro_hilos.fecha_creacion DESC";
-
-    $stmt = $pdo->query($sql);
-    $hilos = $stmt->fetchAll();
-
-} catch (PDOException $e) {
-    echo "Error en la conexión o consulta: " . $e->getMessage();
-    exit;
-}
 
 
 
@@ -331,114 +292,83 @@ try {
                     </div>
                 </div>
 
-                <div class="panel-section" id="contacto">
-                    <h3>Mensajes de Contacto</h3>
-                    <?php
-                    $mensajes = []; // Inicializar variable
-                    try {
-                        $stmt = $conn->query("SELECT id, nombre, correo, comentario, fecha FROM contactos ORDER BY fecha DESC LIMIT 5");
-                        $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (PDOException $e) {
-                        error_log("Error al obtener mensajes de contacto: " . $e->getMessage());
-                        echo "<p>Error al cargar la lista de mensajes de contacto.</p>";
-                    }
-                    ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>Comentario</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($mensajes)): ?>
-                                <?php foreach ($mensajes as $mensaje): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($mensaje['id']); ?></td>
-                                        <td><?php echo htmlspecialchars($mensaje['nombre']); ?></td>
-                                        <td><?php echo htmlspecialchars($mensaje['correo']); ?></td>
-                                        <td class="contenido-truncado"><?php echo htmlspecialchars($mensaje['comentario']); ?></td>
-                                        <td><?php echo htmlspecialchars($mensaje['fecha']); ?></td>
-                                        <td>
-                                            <a href="ver_mensaje.php?id=<?php echo $mensaje['id']; ?>" class="btn-action">Ver</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr><td colspan="6">No hay mensajes de contacto para mostrar.</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                    
-                    <div class="action-buttons">
-                        <a href="listar_mensajes.php" class="btn-action">Ver todos los mensajes</a>
-                    </div>
-                </div>
-
                 <div class="panel-section" id="foro">
-                    <h3>Gestión del Foro</h3>
-                    <?php
-                    $hilos = []; // Inicializar para evitar errores si la consulta falla
-                    try {
-                        // Consulta mejorada que maneja ambos nombres de columna posibles
-                        $hilos = $conn->query("
-                            SELECT f.id, f.titulo, f.contenido, u.nombre as autor, f.fecha_creacion, COUNT(r.id) as respuestas
-                            FROM foro_hilos f
-                            LEFT JOIN usuarios u ON (f.usuario_id = u.id OR f.user_id = u.id)
-                            LEFT JOIN foro_respuestas r ON f.id = r.hilo_id
-                            GROUP BY f.id, f.titulo, f.contenido, u.nombre, f.fecha_creacion
-                            ORDER BY f.fecha_creacion DESC
-                            LIMIT 10
-                        ")->fetchAll();
-                    } catch (PDOException $e) {
-                        error_log("Error al obtener hilos del foro para la tabla: " . $e->getMessage());
-                        echo "<p>Error al cargar la lista de hilos del foro.</p>";
-                    }
-                    ?>
+    <h3>Gestión del Foro</h3>
+    <?php
+    $hilos = []; // Inicializar para evitar errores si la consulta falla
+    try {
+        // Consulta mejorada que maneja ambos nombres de columna posibles
+        $hilos = $conn->query("
+            SELECT f.id, f.titulo, f.contenido, u.nombre as autor, f.fecha_creacion, COUNT(r.id) as respuestas
+            FROM foro_hilos f
+            LEFT JOIN usuarios u ON (f.user_id = u.id OR f.user_id = u.id)
+            LEFT JOIN foro_respuestas r ON f.id = r.hilo_id
+            GROUP BY f.id, f.titulo, f.contenido, u.nombre, f.fecha_creacion
+            ORDER BY f.fecha_creacion DESC
+            LIMIT 10
+        ")->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Error al obtener hilos del foro para la tabla: " . $e->getMessage());
+        echo "<p>Error al cargar la lista de hilos del foro.</p>";
+    }
+    ?>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Título</th>
-                                <th>Autor</th>
-                                <th>Contenido</th>
-                                <th>Respuestas</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-    <tbody>
-        <?php if (!empty($hilos)): ?>
-            <?php foreach ($hilos as $hilo): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($hilo['id']); ?></td>
-                    <td><?php echo htmlspecialchars($hilo['titulo']); ?></td>
-                    <td><?php echo htmlspecialchars($hilo['autor'] ?? 'Desconocido'); ?></td>
-                    <td class="contenido-truncado"><?php echo htmlspecialchars(substr($hilo['contenido'] ?? '', 0, 50)); ?>...</td>
-                    <td><?php echo htmlspecialchars($hilo['respuestas']); ?></td>
-                    <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($hilo['fecha_creacion']))); ?></td>
-                    <td>
-                        <a href="ver_hilo.php?id=<?php echo htmlspecialchars($hilo['id']); ?>" class="btn-action">Ver</a>
-                        <a href="editar_hilo.php?id=<?php echo htmlspecialchars($hilo['id']); ?>" class="btn-action">Editar</a>
-                        <a href="?eliminar_hilo?o=<?php echo $hilo['id']; ?>" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este hilo y todas sus respuestas?')">Eliminar</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr><td colspan="7">No hay hilos en el foro para mostrar.</td></tr>
-        <?php endif; ?>
-    </tbody>
-</table>
+    <!-- Mostrar mensaje de éxito o error -->
+    <?php if (isset($_GET['success'])): ?>
+        <div class="success-message">
+            <?php echo htmlspecialchars($_GET['success']); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($_GET['error'])): ?>
+        <div class="error-message">
+            <?php echo htmlspecialchars($_GET['error']); ?>
+        </div>
+    <?php endif; ?>
 
-                    <div class="action-buttons">
-                        <a href="listar_hilos.php" class="btn-action">Ver todos los hilos</a>
-                        <a href="crear_hilo.php" class="btn-action">Crear nuevo hilo</a>
-                    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Contenido</th>
+                <th>Respuestas</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($hilos)): ?>
+                <?php foreach ($hilos as $hilo): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($hilo['id']); ?></td>
+                        <td><?php echo htmlspecialchars($hilo['titulo']); ?></td>
+                        <td><?php echo htmlspecialchars($hilo['autor'] ?? 'Desconocido'); ?></td>
+                        <td class="contenido-truncado"><?php echo htmlspecialchars(substr($hilo['contenido'] ?? '', 0, 50)); ?>...</td>
+                        <td><?php echo htmlspecialchars($hilo['respuestas']); ?></td>
+                        <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($hilo['fecha_creacion']))); ?></td>
+                        <td>
+                            <a href="ver_hilo.php?id=<?php echo htmlspecialchars($hilo['id']); ?>" class="btn-action">Ver</a>
+                            <a href="editar_hilo.php?id=<?php echo htmlspecialchars($hilo['id']); ?>" class="btn-action">Editar</a>
+                            <!-- CORRECCIÓN: URL corregida para eliminar -->
+                            <a href="eliminar_hilo.php?id=<?php echo htmlspecialchars($hilo['id']); ?>" 
+                               class="btn-delete" 
+                               onclick="return confirm('¿Estás seguro de eliminar este hilo y todas sus respuestas?')">Eliminar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr><td colspan="7">No hay hilos en el foro para mostrar.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <div class="action-buttons">
+        <a href="listar_hilos.php" class="btn-action">Ver todos los hilos</a>
+        <a href="crear_hilo.php" class="btn-action">Crear nuevo hilo</a>
+    </div>
+</div>
                 </div>
             </div>
         </div>

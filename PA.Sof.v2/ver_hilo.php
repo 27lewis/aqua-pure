@@ -8,6 +8,12 @@ if (!isset($_GET['id'])) {
 
 $hilo_id = $_GET['id'];
 
+// Verificar si hay mensaje de confirmación
+$mensaje_confirmacion = '';
+if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'respuesta_publicada') {
+    $mensaje_confirmacion = 'Tu respuesta ha sido publicada correctamente.';
+}
+
 // Obtener la información del hilo
 $stmt = $conn->prepare("
     SELECT f.id, f.titulo, f.contenido, f.fecha_creacion, u.nombre AS autor
@@ -75,6 +81,17 @@ body {
 
 .btn-action:hover {
     background-color: #005f5f;
+}
+
+/* Mensaje de confirmación */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Panel Sections (for thread details, replies, and reply form) */
@@ -197,7 +214,13 @@ body {
 
 <body>
     <div class="container">
-        <a href="listar_hilos.php" class="btn-action">← Volver a los hilos</a>
+        <a href="panel_moderador.php" class="btn-action">← Volver a los hilos</a>
+
+        <?php if ($mensaje_confirmacion): ?>
+            <div class="success-message">
+                <?= htmlspecialchars($mensaje_confirmacion) ?>
+            </div>
+        <?php endif; ?>
 
         <div class="panel-section">
             <h3><?= htmlspecialchars($hilo['titulo']) ?></h3>
@@ -228,6 +251,7 @@ body {
             <?php endif; ?>
         </div>
 
+        <?php if (isset($_SESSION['user_id'])): ?>
         <div class="panel-section">
             <h3>Responder al hilo</h3>
             <form action="responder_hilo.php" method="post">
@@ -238,6 +262,12 @@ body {
                 </div>
             </form>
         </div>
+        <?php else: ?>
+        <div class="panel-section">
+            <h3>Responder al hilo</h3>
+            <p>Debes <a href="iniciarsesion.php">iniciar sesión</a> para poder responder a este hilo.</p>
+        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

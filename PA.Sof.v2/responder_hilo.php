@@ -14,7 +14,7 @@ $hilo_id = $_GET['id'] ?? 0;
 $stmt = $conn->prepare("
     SELECT f.id, f.titulo, f.contenido, u.nombre as autor, f.fecha_creacion 
     FROM foro_hilos f 
-    JOIN usuarios u ON f.usuario_id = u.id 
+    JOIN usuarios u ON f.user_id = u.id 
     WHERE f.id = ?
 ");
 $stmt->execute([$hilo_id]);
@@ -37,25 +37,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         try {
             $stmt = $conn->prepare("
-                INSERT INTO foro_respuestas (hilo_id, usuario_id, contenido, es_moderador) 
+                INSERT INTO foro_respuestas (hilo_id, user_id, contenido, es_moderador) 
                 VALUES (?, ?, ?, TRUE)
             ");
             $stmt->execute([$hilo_id, $_SESSION['user_id'], $contenido]);
             
-            $success = 'Respuesta publicada correctamente.';
+            // CAMBIO IMPORTANTE: Redirigir al hilo completo después de publicar
+            header('Location: ver_hilo.php?id=' . $hilo_id . '&mensaje=respuesta_publicada');
+            exit();
+            
         } catch (PDOException $e) {
             $error = 'Error al publicar la respuesta: ' . $e->getMessage();
         }
     }
 }
+
+// Obtener las respuestas existentes del hilo
+$respuesta_stmt = $conn->prepare("
+    SELECT r.id, r.contenido, r.fecha, r.es_moderador, u.nombre
+    FROM foro_respuestas r
+    JOIN usuarios u ON r.user_id = u.id
+    WHERE r.hilo_id = ?
+    ORDER BY r.fecha ASC
+");
+$respuesta_stmt->execute([$hilo_id]);
+$respuestas = $respuesta_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="inicio.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="inicio.css" />
   <title>Aqua Pure - Responder Hilo</title>
   <style>
     .hilo-container {
@@ -98,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       border: 1px solid #ddd;
       border-radius: 5px;
       margin-bottom: 15px;
+      box-sizing: border-box;
     }
     
     .btn-submit {
@@ -118,13 +133,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       margin-top: 15px;
       color: #007B7F;
       text-decoration: none;
+      margin-left: 15px;
+    }
+    
+    /* Estilos para mostrar las respuestas existentes */
+    .respuestas-existentes {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+    }
+    
+    .respuesta-item {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .respuesta-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: capitalize;
+      margin-left: 5px;
+    }
+    
+    .badge-moderador {
+      background-color: #007B7F;
+      color: white;
+    }
+    
+    .respuesta-contenido {
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-    <header>
+  <header>
     <nav>
-      <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy">
+      <img src="logo.png" alt="Aqua Pure logo representando la conservación del agua" class="logo" loading="lazy" />
       <ul class="nav-links">
         <li><a href="inicio.php">Inicio</a></li>
         <li><a href="guia.php">Guías</a></li>
@@ -146,36 +206,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </nav>
   </header>
-  
+
   <main>
     <div class="contenido">
       <h2>Responder Hilo: <?php echo htmlspecialchars($hilo['titulo']); ?></h2>
-      
+
       <?php if ($error): ?>
-        <div class="error-message" style="color: red; margin-bottom: 15px;"><?php echo $error; ?></div>
+        <div class="error-message" style="color: red; margin-bottom: 15px; padding: 10px; background-color: #ffe6e6; border-radius: 5px;"><?php echo $error; ?></div>
       <?php endif; ?>
-      
+
       <?php if ($success): ?>
-        <div class="success-message" style="color: green; margin-bottom: 15px;"><?php echo $success; ?></div>
+        <div class="success-message" style="color: green; margin-bottom: 15px; padding: 10px; background-color: #e6ffe6; border-radius: 5px;"><?php echo $success; ?></div>
       <?php endif; ?>
-      
+
       <div class="hilo-container">
         <div class="hilo-header">
           <h3><?php echo htmlspecialchars($hilo['titulo']); ?></h3>
         </div>
-        
+
         <div class="hilo-body">
           <div class="hilo-meta">
             <span>Autor: <?php echo htmlspecialchars($hilo['autor']); ?></span>
             <span>Fecha: <?php echo date('d/m/Y H:i', strtotime($hilo['fecha_creacion'])); ?></span>
           </div>
-          
+
           <div class="hilo-contenido">
             <p><?php echo nl2br(htmlspecialchars($hilo['contenido'])); ?></p>
           </div>
         </div>
       </div>
-      
+
+      <!-- Mostrar respuestas existentes -->
+      <?php if (!empty($respuestas)): ?>
+      <div class="respuestas-existentes">
+        <h3>Respuestas existentes (<?php echo count($respuestas); ?>)</h3>
+        <?php foreach ($respuestas as $respuesta): ?>
+          <div class="respuesta-item">
+            <div class="respuesta-meta">
+              <span>
+                <strong><?php echo htmlspecialchars($respuesta['nombre']); ?></strong>
+                <?php if ($respuesta['es_moderador']): ?>
+                  <span class="badge badge-moderador">Moderador</span>
+                <?php endif; ?>
+              </span>
+              <span><?php echo date('d/m/Y H:i', strtotime($respuesta['fecha'])); ?></span>
+            </div>
+            <div class="respuesta-contenido">
+              <?php echo nl2br(htmlspecialchars($respuesta['contenido'])); ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+
       <div class="form-respuesta">
         <h3>Escribe tu respuesta como moderador</h3>
         <form method="post">
